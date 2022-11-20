@@ -1,37 +1,47 @@
-package kimjr;
+package Stack;
+
+//Practice3
+//후위표기법 연산
+//참고 설명) 전위/중위/후위 표기법
+
+//입출력 예시)
+//입력: "2 2 +"
+//출력: 4
+
+//입력: "2 2 -"
+//출력: 0
+
+import java.util.Stack;
 
 public class Practice3 {
-    public static int solution(int[] height) {
-       int left = 0;//좌측벽
-       int right = height.length -1;//우측벽
-       int maxArea = 0;//최대값
-    
-    while (right > left) {
-    	int x = (right - left);
-    	int y = height[left]< height[right]? height[left]: height[right];
-    	int cureArea = x*y;
-    	maxArea = maxArea>cureArea?maxArea:cureArea;//최대값을 구할 때 최대가 현재보다 크면 최대 작으면 현재
- 
-    cureArea =x *Math.min(height[left], height);//더 작은 값 뽑기
-    maxArea=Math.max(maxArea, cureArea);//최대값 뽑기
-    	if(height[left]<height[right]) {
-    		left++;
-    	}
-    	else {
-    		right--;
-    	}
-    }
-    return maxArea;
-    }
-    
+ public static double calculate(String string) {
+Stack<Double> stack = new Stack();
 
-    public static void main(String[] args) {
-        // Test code
-        int[] height = {1, 8, 6, 2, 5, 4, 8, 3, 7};
-        System.out.println(solution(height));
+for(String str :string.split(" ")) {//("")일때는 공백 (" ")일때는 공백이 없음
+	if(str.equals("+")) {
+		stack.push(stack.pop() + stack.pop());//그 다음 연산을 위해 push해둠
+			}else if(str.equals("-")) {
+				stack.push(-stack.pop()+stack.pop());
+			}else if(str.equals("*")) {
+				stack.push(stack.pop() * stack.pop());
+			}else if(str.equals("/")) {
+				stack.push(1 /stack.pop() * stack.pop());
+			}else {
+				stack.push(Double.parseDouble(str));//string 타입을 double타입으로 형변환 해서 push
+			}
+		}
+return stack.pop();
+ 	}
 
-        height = new int[]{5, 3, 9, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2};
-        System.out.println(solution(height));
+ public static void main(String[] args) {
+     // Test code
+     System.out.println(calculate("2 2 +"));    // 4
+     System.out.println(calculate("2 2 -"));    // 0
+     System.out.println(calculate("2 2 *"));    // 4
+     System.out.println(calculate("2 2 /"));    // 1
 
-    }
+     System.out.println(calculate("1 1 + 2 * 3 * 2 / 5 -"));    // 1
+     System.out.println(calculate("5 2 * 3 - 8 * 4 /"));        // 14
+
+ }
 }
